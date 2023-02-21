@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_fluid_slider_nnbd/flutter_fluid_slider_nnbd.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
@@ -29,11 +30,20 @@ class MixerPage extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Flexible(flex: 10 , fit: FlexFit.loose,child: WaveWidget(config: CustomConfig(
-            colors: _colors,
-            durations: _durations,
-            heightPercentages: _heightPercentages,
-          ), size: Size.infinite, backgroundColor: Colors.purpleAccent, isLoop: true,),),
+          Flexible(flex: 10 , fit: FlexFit.loose,child: LiquidPullToRefresh(
+            onRefresh: () async {  },
+            child: GridView.count(
+              crossAxisCount: 1,
+              shrinkWrap: true,
+              children: [
+                WaveWidget(config: CustomConfig(
+                  colors: _colors,
+                  durations: _durations,
+                  heightPercentages: _heightPercentages,
+                ), size: Size.infinite, backgroundColor: Colors.purpleAccent, isLoop: true,),
+              ],
+            ),
+          ),),
           Flexible(flex: 1, child: Container(color: Colors.red, child: FluidSlider(value: 127, min: 0, max: 255, sliderColor: Colors.red, thumbColor: Colors.redAccent, onChanged:(value) {
 
           }),),),
