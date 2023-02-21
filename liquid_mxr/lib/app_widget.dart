@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:liquid_mxr/color_mixer/presentation/bloc/mixer_bloc.dart';
 import 'package:liquid_mxr/color_mixer/presentation/pages/mixer_page.dart';
 
 class AppWidget extends StatelessWidget {
@@ -6,6 +8,9 @@ class AppWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MixerPage();
+    return BlocProvider(
+      create: (context) => MixerBloc(),
+      child: const MixerPage(),
+    );
   }
 }
