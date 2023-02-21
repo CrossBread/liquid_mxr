@@ -52,7 +52,7 @@ class _MixerPageState extends State<MixerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Flexible(flex: 10 , fit: FlexFit.loose,child: LiquidPullToRefresh(
             onRefresh: () async {
@@ -93,19 +93,16 @@ class _MixerPageState extends State<MixerPage> {
 addMixerChangedEvent(context);
           });
   },
-),),
-          Flexible(flex: 1, child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: BlocBuilder<MixerBloc, MixerState>(
+),),SizedBox.square(dimension: 8,),
+          Flexible(flex: 1, child: BlocBuilder<MixerBloc, MixerState>(
   builder: (context, state) {
     return FluidSlider(value: state.colorMix.g.toDouble(), min: 0, max: 255, sliderColor: Colors.green.shade700, thumbColor: state.colorMix.components[1], onChanged:(value) {
-              _greenValue = value;
-              addMixerChangedEvent(context);
+            _greenValue = value;
+            addMixerChangedEvent(context);
 
-            });
+          });
   },
-),
-          ),),
+),),SizedBox.square(dimension: 8,),
           Flexible(flex: 1, child: BlocBuilder<MixerBloc, MixerState>(
   builder: (context, state) {
     return FluidSlider(value: state.colorMix.b.toDouble(), min: 0, max: 255, sliderColor: Colors.blue.shade700, thumbColor: state.colorMix.components[2], onChanged:(value) {
