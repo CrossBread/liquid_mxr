@@ -24,8 +24,8 @@ class MixerPage extends StatefulWidget {
   ];
 
   static const _heightPercentages = [
-    0.65,
-    0.66,
+    0.45,
+    0.56,
     0.67,
   ];
   const MixerPage({super.key});
@@ -38,6 +38,15 @@ class _MixerPageState extends State<MixerPage> {
   double _redValue = 0;
   double _greenValue = 0;
   double _blueValue = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<MixerBloc>().add(const MixerStartEvent(MixerBloc.defaultColorMix));
+    _redValue = MixerBloc.defaultColorMix.r.toDouble();
+    _greenValue = MixerBloc.defaultColorMix.g.toDouble();
+    _blueValue = MixerBloc.defaultColorMix.b.toDouble();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,16 +62,22 @@ class _MixerPageState extends State<MixerPage> {
               crossAxisCount: 1,
               shrinkWrap: true,
               children: [
-                BlocConsumer<MixerBloc, MixerState>(
-  listener: (context, state) {
-    // TODO: implement listener
-  },
+                BlocBuilder<MixerBloc, MixerState>(
   builder: (context, state) {
     return WaveWidget(config: CustomConfig(
                   colors: [darken(state.colorMix.color), lighten(state.colorMix.color),state.colorMix.color],
-                  durations: MixerPage._durations,
-                  heightPercentages: MixerPage._heightPercentages,
-                ), size: Size.infinite, backgroundColor: darken(state.colorMix.color,30), isLoop: true,);
+                  // colors: state.colorMix.components,
+      durations: MixerPage._durations,
+                  // durations: MixerPage._durations.map((value) {
+                  //   print((value*(1-state.colorMix.color.computeLuminance())).toInt());
+                  //   return (value*(1-state.colorMix.color.computeLuminance())).toInt();
+                  // }).toList(),
+                  heightPercentages: MixerPage._heightPercentages.map((e) => e*state.colorMix.intensity).toList(),
+                ), size: Size.infinite,
+      backgroundColor: darken(state.colorMix.color,30),
+      // backgroundColor: state.colorMix.color,
+      isLoop: true,
+    );
   },
 ),
               ],
@@ -70,7 +85,7 @@ class _MixerPageState extends State<MixerPage> {
           ),),
           Flexible(flex: 1, child: Container(color: Colors.red, child: BlocBuilder<MixerBloc, MixerState>(
   builder: (context, state) {
-    return FluidSlider(value: state.colorMix.r.toDouble(), min: 0, max: 255, sliderColor: Colors.red, thumbColor: Colors.redAccent, onChanged:(value) {
+    return FluidSlider(value: state.colorMix.r.toDouble(), min: 0, max: 255, sliderColor: Colors.red, thumbColor: state.colorMix.components[0], onChanged:(value) {
             _redValue = value;
 addMixerChangedEvent(context);
           });
@@ -78,7 +93,7 @@ addMixerChangedEvent(context);
 ),),),
           Flexible(flex: 1, child: Container(color: Colors.green, child: BlocBuilder<MixerBloc, MixerState>(
   builder: (context, state) {
-    return FluidSlider(value: state.colorMix.g.toDouble(), min: 0, max: 255, sliderColor: Colors.green, thumbColor: Colors.greenAccent, onChanged:(value) {
+    return FluidSlider(value: state.colorMix.g.toDouble(), min: 0, max: 255, sliderColor: Colors.green, thumbColor: state.colorMix.components[1], onChanged:(value) {
             _greenValue = value;
             addMixerChangedEvent(context);
 
@@ -87,7 +102,7 @@ addMixerChangedEvent(context);
 ),),),
           Flexible(flex: 1, child: Container(color: Colors.blue, child: BlocBuilder<MixerBloc, MixerState>(
   builder: (context, state) {
-    return FluidSlider(value: state.colorMix.b.toDouble(), min: 0, max: 255, sliderColor: Colors.blue, thumbColor: Colors.blueAccent, onChanged:(value) {
+    return FluidSlider(value: state.colorMix.b.toDouble(), min: 0, max: 255, sliderColor: Colors.blue, thumbColor: state.colorMix.components[2], onChanged:(value) {
             _blueValue = value;
             addMixerChangedEvent(context);
 
