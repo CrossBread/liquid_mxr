@@ -86,32 +86,35 @@ class _MixerPageState extends State<MixerPage> {
               ],
             ),
           ),),
-          Flexible(flex: 1, child: Container(color: Colors.red, child: BlocBuilder<MixerBloc, MixerState>(
+          Flexible(flex: 1, child: BlocBuilder<MixerBloc, MixerState>(
   builder: (context, state) {
-    return FluidSlider(value: state.colorMix.r.toDouble(), min: 0, max: 255, sliderColor: Colors.red, thumbColor: state.colorMix.components[0], onChanged:(value) {
+    return FluidSlider(value: state.colorMix.r.toDouble(), min: 0, max: 255, sliderColor: Colors.red.shade700, thumbColor: state.colorMix.components[0], onChanged:(value) {
             _redValue = value;
 addMixerChangedEvent(context);
           });
   },
-),),),
-          Flexible(flex: 1, child: Container(color: Colors.green, child: BlocBuilder<MixerBloc, MixerState>(
+),),
+          Flexible(flex: 1, child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: BlocBuilder<MixerBloc, MixerState>(
   builder: (context, state) {
-    return FluidSlider(value: state.colorMix.g.toDouble(), min: 0, max: 255, sliderColor: Colors.green, thumbColor: state.colorMix.components[1], onChanged:(value) {
-            _greenValue = value;
-            addMixerChangedEvent(context);
+    return FluidSlider(value: state.colorMix.g.toDouble(), min: 0, max: 255, sliderColor: Colors.green.shade700, thumbColor: state.colorMix.components[1], onChanged:(value) {
+              _greenValue = value;
+              addMixerChangedEvent(context);
 
-          });
+            });
   },
-),),),
-          Flexible(flex: 1, child: Container(color: Colors.blue, child: BlocBuilder<MixerBloc, MixerState>(
+),
+          ),),
+          Flexible(flex: 1, child: BlocBuilder<MixerBloc, MixerState>(
   builder: (context, state) {
-    return FluidSlider(value: state.colorMix.b.toDouble(), min: 0, max: 255, sliderColor: Colors.blue, thumbColor: state.colorMix.components[2], onChanged:(value) {
+    return FluidSlider(value: state.colorMix.b.toDouble(), min: 0, max: 255, sliderColor: Colors.blue.shade700, thumbColor: state.colorMix.components[2], onChanged:(value) {
             _blueValue = value;
             addMixerChangedEvent(context);
 
           }, );
   },
-),),),
+),),
 
         ],
       ),
