@@ -68,6 +68,9 @@ class _MixerPageState extends State<MixerPage> {
                   colors: [darken(state.colorMix.color), lighten(state.colorMix.color),state.colorMix.color],
                   // colors: state.colorMix.components,
       durations: MixerPage._durations,
+                  blur: const MaskFilter.blur(BlurStyle.solid, 3),
+                  // gradients: [[darken(state.colorMix.color), lighten(state.colorMix.color),state.colorMix.color],[darken(state.colorMix.color), lighten(state.colorMix.color),state.colorMix.color],[darken(state.colorMix.color), lighten(state.colorMix.color),state.colorMix.color],],
+                  // gradients: [[darken(state.colorMix.color), darken(state.colorMix.color,20),darken(state.colorMix.color)],[lighten(state.colorMix.color), lighten(state.colorMix.color,20),lighten(state.colorMix.color)],[darken(state.colorMix.color), lighten(state.colorMix.color),state.colorMix.color],],
                   // durations: MixerPage._durations.map((value) {
                   //   print((value*(1-state.colorMix.color.computeLuminance())).toInt());
                   //   return (value*(1-state.colorMix.color.computeLuminance())).toInt();
