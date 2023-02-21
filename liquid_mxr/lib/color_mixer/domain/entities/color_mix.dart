@@ -10,4 +10,14 @@ class ColorMix extends Equatable{
 
   @override
   List<Object> get props => [r, g, b];
+
+  ColorMix copyWith({
+    int? r,
+    int? g,
+    int? b,
+  }) => ColorMix(
+      r = r ?? this.r,
+      g = g ?? this.g,
+      b = b ?? this.b,
+    );
 }
