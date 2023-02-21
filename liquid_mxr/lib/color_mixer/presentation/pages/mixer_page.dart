@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fluid_slider_nnbd/flutter_fluid_slider_nnbd.dart';
+import 'package:liquid_mxr/color_mixer/color_utils.dart';
+import 'package:liquid_mxr/color_mixer/presentation/bloc/mixer_bloc.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
@@ -14,13 +17,15 @@ class MixerPage extends StatelessWidget {
   ];
 
   static const _durations = [
+    7000,
+    6000,
     5000,
-    4000,
   ];
 
   static const _heightPercentages = [
     0.65,
     0.66,
+    0.67,
   ];
   const MixerPage({super.key});
 
@@ -36,11 +41,18 @@ class MixerPage extends StatelessWidget {
               crossAxisCount: 1,
               shrinkWrap: true,
               children: [
-                WaveWidget(config: CustomConfig(
-                  colors: _colors,
+                BlocConsumer<MixerBloc, MixerState>(
+  listener: (context, state) {
+    // TODO: implement listener
+  },
+  builder: (context, state) {
+    return WaveWidget(config: CustomConfig(
+                  colors: [darken(state.colorMix.color), lighten(state.colorMix.color),state.colorMix.color],
                   durations: _durations,
                   heightPercentages: _heightPercentages,
-                ), size: Size.infinite, backgroundColor: Colors.purpleAccent, isLoop: true,),
+                ), size: Size.infinite, backgroundColor: Colors.purpleAccent, isLoop: true,);
+  },
+),
               ],
             ),
           ),),
