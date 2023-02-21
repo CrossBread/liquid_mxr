@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fluid_slider_nnbd/flutter_fluid_slider_nnbd.dart';
 import 'package:liquid_mxr/color_mixer/color_utils.dart';
+import 'package:liquid_mxr/color_mixer/domain/entities/color_mix.dart';
 import 'package:liquid_mxr/color_mixer/presentation/bloc/mixer_bloc.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
 
-class MixerPage extends StatelessWidget {
+class MixerPage extends StatefulWidget {
   static const _backgroundColor = Color(0xFFF15BB5);
 
   static const _colors = [
@@ -30,6 +31,15 @@ class MixerPage extends StatelessWidget {
   const MixerPage({super.key});
 
   @override
+  State<MixerPage> createState() => _MixerPageState();
+}
+
+class _MixerPageState extends State<MixerPage> {
+  double _redValue = 0;
+  double _greenValue = 0;
+  double _blueValue = 0;
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
@@ -48,27 +58,48 @@ class MixerPage extends StatelessWidget {
   builder: (context, state) {
     return WaveWidget(config: CustomConfig(
                   colors: [darken(state.colorMix.color), lighten(state.colorMix.color),state.colorMix.color],
-                  durations: _durations,
-                  heightPercentages: _heightPercentages,
+                  durations: MixerPage._durations,
+                  heightPercentages: MixerPage._heightPercentages,
                 ), size: Size.infinite, backgroundColor: Colors.purpleAccent, isLoop: true,);
   },
 ),
               ],
             ),
           ),),
-          Flexible(flex: 1, child: Container(color: Colors.red, child: FluidSlider(value: 127, min: 0, max: 255, sliderColor: Colors.red, thumbColor: Colors.redAccent, onChanged:(value) {
+          Flexible(flex: 1, child: Container(color: Colors.red, child: BlocBuilder<MixerBloc, MixerState>(
+  builder: (context, state) {
+    return FluidSlider(value: state.colorMix.r.toDouble(), min: 0, max: 255, sliderColor: Colors.red, thumbColor: Colors.redAccent, onChanged:(value) {
+            _redValue = value;
+addMixerChangedEvent(context);
+          });
+  },
+),),),
+          Flexible(flex: 1, child: Container(color: Colors.green, child: BlocBuilder<MixerBloc, MixerState>(
+  builder: (context, state) {
+    return FluidSlider(value: state.colorMix.g.toDouble(), min: 0, max: 255, sliderColor: Colors.green, thumbColor: Colors.greenAccent, onChanged:(value) {
+            _greenValue = value;
+            addMixerChangedEvent(context);
 
-          }),),),
-          Flexible(flex: 1, child: Container(color: Colors.green, child: FluidSlider(value: 127, min: 0, max: 255, sliderColor: Colors.green, thumbColor: Colors.greenAccent, onChanged:(value) {
+          });
+  },
+),),),
+          Flexible(flex: 1, child: Container(color: Colors.blue, child: BlocBuilder<MixerBloc, MixerState>(
+  builder: (context, state) {
+    return FluidSlider(value: state.colorMix.b.toDouble(), min: 0, max: 255, sliderColor: Colors.blue, thumbColor: Colors.blueAccent, onChanged:(value) {
+            _blueValue = value;
+            addMixerChangedEvent(context);
 
-          }),),),
-          Flexible(flex: 1, child: Container(color: Colors.blue, child: FluidSlider(value: 127, min: 0, max: 255, sliderColor: Colors.blue, thumbColor: Colors.blueAccent, onChanged:(value) {
-
-          }, ),),),
+          }, );
+  },
+),),),
 
         ],
       ),
 
     );
+  }
+
+  void addMixerChangedEvent(BuildContext context) {
+    context.read<MixerBloc>().add(MixerChangedEvent(ColorMix(_redValue.round(), _greenValue.round(), _blueValue.round())));
   }
 }
