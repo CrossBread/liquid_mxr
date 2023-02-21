@@ -46,7 +46,9 @@ class _MixerPageState extends State<MixerPage> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Flexible(flex: 10 , fit: FlexFit.loose,child: LiquidPullToRefresh(
-            onRefresh: () async {  },
+            onRefresh: () async {
+              context.read<MixerBloc>().add(const MixerResetEvent(MixerBloc.defaultColorMix));
+            },
             child: GridView.count(
               crossAxisCount: 1,
               shrinkWrap: true,
@@ -60,7 +62,7 @@ class _MixerPageState extends State<MixerPage> {
                   colors: [darken(state.colorMix.color), lighten(state.colorMix.color),state.colorMix.color],
                   durations: MixerPage._durations,
                   heightPercentages: MixerPage._heightPercentages,
-                ), size: Size.infinite, backgroundColor: Colors.purpleAccent, isLoop: true,);
+                ), size: Size.infinite, backgroundColor: darken(state.colorMix.color,30), isLoop: true,);
   },
 ),
               ],
