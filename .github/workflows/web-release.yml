@@ -29,9 +29,12 @@ jobs:
           channel: 'stable'
           cache: true
       - run: flutter --version
-      
+
       - name: Get dependencies
         run: flutter pub get
+
+      - name: Clear out any old build files
+        run: flutter clean
 
       - name: Start Web Release Build
         run: flutter build web --release
@@ -58,3 +61,4 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./
+        force_orphan: true
